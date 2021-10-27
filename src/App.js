@@ -26,20 +26,27 @@ class App extends Component {
       this.setState({branch1: data[0]})
       this.setState({branch2: data[1]})
       this.setState({branch3: data[2]})
-
+      
       this.setState({ merged: [...this.state.branch1.products, ...this.state.branch2.products, ...this.state.branch3.products]})
+      
+      
+      this.arrange(this.state.merged)
+      
+      console.log(this.state.merged)
 
       var clean = this.state.merged.filter((arr, index, self) =>
       index === self.findIndex((t) => (t.id === arr.id && t.name === arr.name)))
       this.setState({ filtered: clean})
       this.setState({ searches: clean})
-
+      console.log(this.state.merged)
     })
 
   }
 
   onpress = (ev)=> {
+    debugger
     this.state.sum = 1
+
     if(ev.target.value. length > 0){
 
       this.setState({searches: this.state.filtered.filter((item)=>{
@@ -52,6 +59,11 @@ class App extends Component {
 
     })}) 
     }else{
+      this.state.searches = []
+      var clean = this.state.merged.filter((arr, index, self) =>
+      index === self.findIndex((t) => (t.id === arr.id && t.name === arr.name)))
+      this.setState({ filtered: clean})
+      this.setState({ searches: clean})
 
       this.setState({searches: this.state.merged})
 
@@ -76,7 +88,15 @@ class App extends Component {
       return total
   }
 
- 
+ arrange(arr){
+   debugger
+    arr.sort(function(a, b) {
+    var textA = a.name
+    var textB = b.name
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+});
+
+ }
 
   render() {
     return (
