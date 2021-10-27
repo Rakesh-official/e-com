@@ -32,19 +32,31 @@ class App extends Component {
       
       this.arrange(this.state.merged)
       
-      console.log(this.state.merged)
+      this.state.merged.forEach((element) => {
+       element.revenue = element.unitPrice * element.sold;
+        
+      });
+      this.state.merged.forEach((element, i) => {
+        debugger
+        this.state.merged.forEach((e, index) =>{
+          if(element.name == e.name && i != index){
+            element.revenue = element.revenue + e.revenue;
+            const indi = this.state.merged.indexOf(e);
+            if (indi > -1){
+              this.state.merged.splice(indi, 1)
+            }
+          }
+        })
+      });
 
-      var clean = this.state.merged.filter((arr, index, self) =>
-      index === self.findIndex((t) => (t.id === arr.id && t.name === arr.name)))
+      var clean = this.state.merged.filter((arr, index, self) => index === self.findIndex((t) => (t.id === arr.id && t.name === arr.name)))
       this.setState({ filtered: clean})
       this.setState({ searches: clean})
-      console.log(this.state.merged)
     })
 
   }
 
   onpress = (ev)=> {
-    debugger
     this.state.sum = 1
 
     if(ev.target.value. length > 0){
@@ -59,14 +71,7 @@ class App extends Component {
 
     })}) 
     }else{
-      this.state.searches = []
-      var clean = this.state.merged.filter((arr, index, self) =>
-      index === self.findIndex((t) => (t.id === arr.id && t.name === arr.name)))
-      this.setState({ filtered: clean})
-      this.setState({ searches: clean})
-
       this.setState({searches: this.state.merged})
-
     }
 
   }
@@ -74,7 +79,7 @@ class App extends Component {
   allSum(){
       let total = 0;
       this.state.merged.forEach((element) => {
-        total = total+element.unitPrice
+        total = total+element.revenue
         
       });
       return total
@@ -82,14 +87,13 @@ class App extends Component {
   filterSum(){
       let total = 0;
       this.state.searches.forEach((element) => {
-        total = total+element.unitPrice
+        total = total+element.revenue
         
       });
       return total
   }
 
  arrange(arr){
-   debugger
     arr.sort(function(a, b) {
     var textA = a.name
     var textB = b.name
@@ -115,7 +119,7 @@ class App extends Component {
           {
             this.state.searches.map((item, i)=>{
 
-                return <tr key={i}><td>{ item.name }</td><td>{ item.unitPrice }</td></tr>
+                return <tr key={i}><td>{ item.name }</td><td>{ item.revenue }</td></tr>
             })
           }
         </tbody>
